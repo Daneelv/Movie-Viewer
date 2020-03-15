@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>⭐️⭐️⭐️Movie Finder⭐️⭐️⭐️</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rCA2D+D9QXuP2TomtQwd+uP50EHjpafN+wruul0sXZzX/Da7Txn4tB9aLMZV4DZm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <nav class="navbar navbar-dark bg-dark mb-3">
+      <div class="container">
+        <a href="#" class="navbar-brand">⭐️⭐️⭐️ Movie Finder ⭐️⭐️⭐️</a>
+      </div>
+    </nav>
+
+    <div class="container main-container">
+      <div class="row">
+        <div class="col col-lg-8">
+          <div class="search card card-body mb-3">
+            <h1>Search a Movie</h1>
+            <p class="lead">Enter movie name</p>
+            <input
+              type="text"
+              id="movieName"
+              class="form-control"
+              placeholder="Movie Name..."
+            />
+          </div>
+
+          <div class="search-result card card-body mb-3" id="searchResults">
+            <!-- Search Results Code Here -->
+            <div class="card-body border border-primary m-2">
+              <h4 class="card-title">Movie 1</h4>
+
+              <!-- images config api https://api.themoviedb.org/3/configuration?api_key=531eaffcac14a8c431f91d7a77a345e8 -->
+              <div class="row">
+                <div class="col-3">
+                  <img
+                    src="https://image.tmdb.org/t/p/w92/kqjL17yufvn9OVLyXYpvtyrFfak.jpg"
+                    alt=""
+                  />
+                </div>
+
+                <div class="col-9">
+                  <p class="card-text">
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col md-8"></div>
+                <button type="button" class=" btn btn-primary float-right mr-4">
+                  Add to Favourites
+                </button>
+              </div>
+            </div>
+            <!-- End -->
+          </div>
+        </div>
+
+        <div class="col col-md-4">
+          <div class="card mb-3" style="max-width: 20rem;">
+            <div class="card-header">My Favourites</div>
+
+            <div class="card-body border border-primary m-2">
+              <h4 class="card-title">Movie 1</h4>
+              <p class="card-text">
+                Some quick example .
+              </p>
+              <div class="col md-10"></div>
+              <button type="button" class=" btn btn-link float-right">
+                Remove
+              </button>
+            </div>
+
+            <div class="card-body border border-primary m-2">
+              <h4 class="card-title">Movie 1</h4>
+              <p class="card-text">
+                Some quick example text to build on .
+              </p>
+              <div class="col md-10"></div>
+              <button type="button" class=" btn btn-link float-right ">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-5 p-3 text-center bg-dark">
+      Movie Finder &copy;
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
