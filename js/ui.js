@@ -2,6 +2,7 @@ class UI {
   constructor() {
     this.searchResult = document.getElementById('searchResults');
     this.searchResult.style.display = 'none';
+    this.favBar = document.querySelector('.favourites');
   }
 
   showResults(movieData) {
@@ -35,7 +36,7 @@ class UI {
         </div>
         <div class="row">
           <div class="col md-10"></div>
-          <button type="button" class=" btn btn-primary float-right float-right mr-4">
+          <button type="button" data-movie-id="${movie.id}" class=" btnAdd btn btn-primary float-right float-right mr-4">
             Add to Favourites
           </button>
         </div>
@@ -44,6 +45,25 @@ class UI {
     });
 
     this.searchResult.innerHTML = output;
+  }
+
+  addFavourite(movieData) {
+    let movieInfo = movieData.movieData;
+    let output = `
+    
+    <div class="card-body border border-primary m-2">
+    <h4 class="card-title">${movieInfo.title}</h4>
+    <p class="card-text">
+      ${movieInfo.overview}
+    </p>
+    <div class="col md-10"></div>
+    <button type="button" class=" btn btn-link float-right">
+      Remove
+    </button>
+    </div>
+    `;
+    console.log(movieData);
+    this.favBar.innerHTML += output;
   }
 
   clearSearchResults() {
