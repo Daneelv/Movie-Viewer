@@ -36,7 +36,7 @@ class UI {
         </div>
         <div class="row">
           <div class="col md-10"></div>
-          <button type="button" data-movie-id="${movie.id}" class=" btnAdd btn btn-primary float-right float-right mr-4">
+          <button type="button" data-movie-id="${movie.id}" id="btnAddFav" class=" btn btn-primary float-right float-right mr-4">
             Add to Favourites
           </button>
         </div>
@@ -57,12 +57,11 @@ class UI {
       ${movieInfo.overview}
     </p>
     <div class="col md-10"></div>
-    <button type="button" class=" btn btn-link float-right">
+    <button type="button" id="removeItem" class=" btn btn-link float-right">
       Remove
     </button>
     </div>
     `;
-    console.log(movieData);
     this.favBar.innerHTML += output;
   }
 
