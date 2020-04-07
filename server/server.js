@@ -32,11 +32,6 @@ mongoose
     process.exit();
   });
 
-// define a simple route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to The movie DB Database' });
-});
-
 //User db route setup
 require('./routes/user-routes.js')(app);
 

@@ -1,4 +1,35 @@
 const User = require('../models/user-model.js');
+const jwt = require('jsonwebtoken');
+
+exports.login = (req, res) => {
+  // Validate request
+  if (!req.body.userName && !req.body.password) {
+    return res.status(400).send({
+      message: 'Username and password required',
+    });
+  }
+
+  User.findOne({ userName: req.body.userName, password: req.body.password }, (err, user) => {
+    if (err) {
+      return res.status(401).send({
+        message: 'Error: With Find User: Something went wrong',
+      });
+    }
+    //Check if UserName already exists
+    if (!user) {
+      return res.status(402).send({
+        message: 'Username and password combination incorrect',
+      });
+    }
+
+    jwt.sign({ user }, 'MySecretKey', (err, token) => {
+      return res.json({ user_id: user.id, token });
+    });
+
+
+  });
+};
+
 
 // Create and Save a new user
 exports.create = (req, res) => {
@@ -9,7 +40,7 @@ exports.create = (req, res) => {
     });
   }
 
-  User.find({ userName: req.body.userName }, (err, results) => {
+  User.find({ userName: req.body.userName }, (err, userData) => {
     if (err) {
       return res.status(401).send({
         message: 'Error: With Find User: Something went wrong',
@@ -17,7 +48,7 @@ exports.create = (req, res) => {
     }
 
     //Check if UserName already exists
-    if (results.length) {
+    if (userData.length) {
       return res.status(402).send({
         message: 'Sorry, That username has already been taken',
       });
@@ -49,7 +80,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   User.find()
     .then((user) => {
-      res.status(user);
+      res.send(user);
     })
     .catch((err) => {
       res.status(500).send({
@@ -82,7 +113,7 @@ exports.findOne = (req, res) => {
 };
 
 // Update favourites user identified by the userId in the request
-exports.update = (req, res) => {
+exports.updateFavourite = (req, res) => {
   // Validate Request
   if (!req.body.movie_id) {
     return res.status(400).send({
@@ -90,9 +121,8 @@ exports.update = (req, res) => {
     });
   }
 
-  //Check if movie is not already addes as a favourite
+  //Check if movie is not already added as a favourite
   User.find({ favourites: req.body.movie_id }, (err, locations) => {
-    console.log(locations);
 
     if (err) {
       return res.status(401).send({
@@ -138,7 +168,7 @@ exports.update = (req, res) => {
 };
 
 // Delete a user with the specified userId in the request
-exports.delete = (req, res) => {
+exports.deleteFavourite = (req, res) => {
   // Validate Request
   if (!req.params.userId) {
     return res.status(400).send({
@@ -159,18 +189,21 @@ exports.delete = (req, res) => {
     .then((movieId) => {
       const favourites = movieId.favourites;
 
-      for (let i = 0; i < favourites.length; i++) {
-        const favourite = favourites[i];
-        if (req.body.movie_id === favourite) {
-          return res.status(404).send({
-            message: 'Error: Could not delete movie ' + req.body.movie_id,
-          });
-        }
-      }
+      // Check to see if the movie still exists in DB, Stupid check, but it doesn't hurt 😊
+      const found = favourites.find(movie_id => { movie_id === req.body.movie_id })
 
-      res.send(JSON.stringify(req.body.movie_id));
+      if (typeof found !== 'undefined') {
+        return res.status(404).send({
+          message: 'Error: Could not delete movie ' + req.body.movie_id,
+        });
+      } else {
+        res.send(JSON.stringify(req.body.movie_id));
+      }
     })
     .catch((err) => {
+
+      console.log(err);
+
       if (err.kind === 'ObjectId') {
         return res.status(404).send({
           message: 'User not found with id ' + req.params.userId,
