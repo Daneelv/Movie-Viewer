@@ -68,7 +68,7 @@
               </div> -->
               <div class="row">
                 <div class="col md-8"></div>
-                <button type="button" class=" btn btn-primary float-right mr-4">
+                <button type="button" class="btn btn-primary float-right mr-4">
                   Add to Favourites
                 </button>
               </div>
@@ -78,6 +78,62 @@
         </div>
 
         <div class="col col-md-4">
+          <div class="card mb-3" style="max-width: 20rem;">
+            <div class="loginName card-header">
+              <span class="d-inline-block col-9">Login</span>
+            </div>
+
+            <form id="formlogin" class="m-2">
+              <div class="form-group">
+                <label for="userName"></label>
+                <input
+                  type="text"
+                  id="userName"
+                  placeholder="Username"
+                  style="
+                    width: 15rem;
+                    height: 1.8rem;
+                    border-radius: 2px;
+                    border: none;
+                  "
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="userPass"></label>
+                <input
+                  type="password"
+                  id="userPass"
+                  placeholder="Password"
+                  style="
+                    width: 15rem;
+                    height: 1.8rem;
+                    border-radius: 2px;
+                    border: none;
+                  "
+                  required
+                />
+              </div>
+
+              <input
+                type="submit"
+                id="btnLoginUser"
+                class="btn btn-primary mr-4 btn-sm"
+                style="width: 5.3rem;"
+                value="Log In"
+              />
+
+              <input
+                type="submit"
+                id="btnRegisterUser"
+                class="btn btn-warning btn-sm"
+                style="width: 5.3rem;"
+                value="Register"
+              />
+            </form>
+          </div>
+
           <div class="favourites card mb-3" style="max-width: 20rem;">
             <div class="card-header">My Favourites</div>
           </div>
@@ -89,6 +145,7 @@
       Movie Finder &copy;
     </footer>
 
+    <script src="js/dataApi.js"></script>
     <script src="js/api.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>

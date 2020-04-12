@@ -3,53 +3,60 @@ const jwt = require('jsonwebtoken');
 
 exports.login = (req, res) => {
   // Validate request
-  if (!req.body.userName && !req.body.password) {
+  if (!req.body.userName || !req.body.password) {
     return res.status(400).send({
+      err: true,
       message: 'Username and password required',
     });
   }
 
-  User.findOne({ userName: req.body.userName, password: req.body.password }, (err, user) => {
-    if (err) {
-      return res.status(401).send({
-        message: 'Error: With Find User: Something went wrong',
+  User.findOne(
+    { userName: req.body.userName, password: req.body.password },
+    (err, user) => {
+      if (err) {
+        return res.status(400).send({
+          err: true,
+          message: 'Error: With Find User: Something went wrong',
+        });
+      }
+      //Check if UserName already exists
+      if (!user) {
+        return res.status(400).send({
+          err: true,
+          message: 'Username and password combination incorrect',
+        });
+      }
+
+      //user Token Auth
+      jwt.sign({ user }, 'MySecretKey', (err, token) => {
+        return res.json({ Id: user._id, userName: user.userName, token });
       });
     }
-    //Check if UserName already exists
-    if (!user) {
-      return res.status(402).send({
-        message: 'Username and password combination incorrect',
-      });
-    }
-
-    jwt.sign({ user }, 'MySecretKey', (err, token) => {
-      return res.json({ user_id: user.id, token });
-    });
-
-
-  });
+  );
 };
-
 
 // Create and Save a new user
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.userName) {
     return res.status(400).send({
+      err: true,
       message: 'User details can not be empty',
     });
   }
 
   User.find({ userName: req.body.userName }, (err, userData) => {
     if (err) {
-      return res.status(401).send({
+      return res.status(400).send({
+        err: true,
         message: 'Error: With Find User: Something went wrong',
       });
     }
 
     //Check if UserName already exists
     if (userData.length) {
-      return res.status(402).send({
+      return res.status(400).send({
+        err: true,
         message: 'Sorry, That username has already been taken',
       });
     }
@@ -69,6 +76,7 @@ exports.create = (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({
+          err: true,
           message:
             err.message || 'Some error occurred while creating the new user.',
         });
@@ -84,6 +92,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        err: true,
         message: err.message || 'Some error occurred while retrieving users.',
       });
     });
@@ -94,7 +103,8 @@ exports.findOne = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        return res.status(404).send({
+        return res.status(400).send({
+          err: true,
           message: 'User with id ' + req.params.userid + ' Not Found',
         });
       }
@@ -102,11 +112,13 @@ exports.findOne = (req, res) => {
     })
     .catch((err) => {
       if (err.kind === 'ObjectId') {
-        return res.status(404).send({
+        return res.status(400).send({
+          err: true,
           message: 'User with id ' + req.params.userid + ' Not Found',
         });
       }
       return res.status(500).send({
+        err: true,
         message: 'Error: retrieving User with id ' + req.params.userid,
       });
     });
@@ -117,21 +129,23 @@ exports.updateFavourite = (req, res) => {
   // Validate Request
   if (!req.body.movie_id) {
     return res.status(400).send({
+      err: true,
       message: 'content can not be empty',
     });
   }
 
   //Check if movie is not already added as a favourite
   User.find({ favourites: req.body.movie_id }, (err, locations) => {
-
     if (err) {
-      return res.status(401).send({
+      return res.status(400).send({
+        err: true,
         message: 'Error: Something went wrong',
       });
     }
 
     if (locations.length > 0) {
-      return res.status(402).send({
+      return res.status(400).send({
+        err: true,
         message: 'Movie Already in Favourites',
       });
     }
@@ -148,7 +162,8 @@ exports.updateFavourite = (req, res) => {
     )
       .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(400).send({
+            err: true,
             message: 'User not found with id ' + req.params.userId,
           });
         }
@@ -156,11 +171,13 @@ exports.updateFavourite = (req, res) => {
       })
       .catch((err) => {
         if (err.kind === 'ObjectId') {
-          return res.status(404).send({
+          return res.status(400).send({
+            err: true,
             message: 'User not found with id ' + req.params.userId,
           });
         }
         return res.status(500).send({
+          err: true,
           message: 'Error: updating user with id ' + req.params.userId,
         });
       });
@@ -172,6 +189,7 @@ exports.deleteFavourite = (req, res) => {
   // Validate Request
   if (!req.params.userId) {
     return res.status(400).send({
+      err: true,
       message: 'Please pass the userId as parameter',
     });
   }
@@ -190,10 +208,13 @@ exports.deleteFavourite = (req, res) => {
       const favourites = movieId.favourites;
 
       // Check to see if the movie still exists in DB, Stupid check, but it doesn't hurt 😊
-      const found = favourites.find(movie_id => { movie_id === req.body.movie_id })
+      const found = favourites.find((movie_id) => {
+        movie_id === req.body.movie_id;
+      });
 
       if (typeof found !== 'undefined') {
-        return res.status(404).send({
+        return res.status(400).send({
+          err: true,
           message: 'Error: Could not delete movie ' + req.body.movie_id,
         });
       } else {
@@ -201,15 +222,16 @@ exports.deleteFavourite = (req, res) => {
       }
     })
     .catch((err) => {
-
       console.log(err);
 
       if (err.kind === 'ObjectId') {
-        return res.status(404).send({
+        return res.status(400).send({
+          err: true,
           message: 'User not found with id ' + req.params.userId,
         });
       }
       return res.status(500).send({
+        err: true,
         message:
           'Error: Could not delete movie out of database, please investigate',
       });

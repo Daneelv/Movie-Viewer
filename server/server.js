@@ -1,8 +1,15 @@
+// Reference
+//https://www.callicoder.com/node-js-express-mongodb-restful-crud-api-tutorial/
+
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // create express app
 const app = express();
+
+//
+app.use(cors());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,5 +46,3 @@ require('./routes/user-routes.js')(app);
 app.listen(3000, () => {
   console.log('Server is listening on port 3000');
 });
-
-//https://www.callicoder.com/node-js-express-mongodb-restful-crud-api-tutorial/

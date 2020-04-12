@@ -16,7 +16,7 @@ class MovieApi {
     const movieData = await movieResponse.json();
 
     return {
-      movieData
+      movieData,
     };
   }
 
@@ -30,7 +30,7 @@ class MovieApi {
     const movieData = await movieResponse.json();
 
     return {
-      movieData
+      movieData,
     };
   }
 }
